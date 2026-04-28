@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const postModules = import.meta.glob("../../content/blog/*.md", { eager: true });
+const posts = Object.entries(postModules)
+  .map(([path, post]) => {
+    const frontmatter = post.frontmatter ?? {};
+    const filename = path.split("/").pop() ?? "";
+    const slug = filename.replace(/\.md$/, "");
+    const pubDate = frontmatter.pubDate ? new Date(frontmatter.pubDate) : new Date(0);
+
+    return {
+      slug,
+      title: frontmatter.title ?? slug,
+      description: frontmatter.description,
+      pubDate,
+      draft: Boolean(frontmatter.draft),
+    };
+  })
+  .filter((post) => !post.draft)
+  .sort((left, right) => right.pubDate.valueOf() - left.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog · Par">
+  <main class="simple-page">
+    <section class="page-heading">
+      <p class="eyebrow">Updates</p>
+      <h1>Blog</h1>
+      <p>
+        Release notes, project updates, and language notes will live here once
+        the site grows out of its work-in-progress shell.
+      </p>
+    </section>
+
+    {
+      posts.length > 0 ? (
+        <ol class="post-list">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.slug}/`}>{post.title}</a>
+              <time datetime={post.pubDate.toISOString()}>
+                {post.pubDate.toLocaleDateString("en", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              {post.description && <p>{post.description}</p>}
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <div class="empty-state">
+          <h2>No posts yet</h2>
+          <p>
+            The blog is wired up, but the notebook is still clean. Check back
+            after the first real update lands.
+          </p>
+        </div>
+      )
+    }
+  </main>
+</BaseLayout>

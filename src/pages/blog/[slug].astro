@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const postModules = import.meta.glob("../../content/blog/*.md");
+  const posts = await Promise.all(
+    Object.entries(postModules).map(async ([path, loadPost]) => {
+      const post = await loadPost();
+      const frontmatter = post.frontmatter ?? {};
+      const filename = path.split("/").pop() ?? "";
+      const slug = filename.replace(/\.md$/, "");
+
+      return {
+        slug,
+        frontmatter,
+        Content: post.default,
+      };
+    }),
+  );
+
+  return posts
+    .filter((post) => !post.frontmatter.draft)
+    .map((post) => ({
+      params: { slug: post.slug },
+      props: post,
+    }));
+}
+
+const { frontmatter, Content } = Astro.props;
+const pubDate = frontmatter.pubDate ? new Date(frontmatter.pubDate) : null;
+---
+
+<BaseLayout title={`${frontmatter.title} · Par Blog`}>
+  <main class="simple-page">
+    <article class="blog-post">
+      <header class="page-heading">
+        <p class="eyebrow">Blog</p>
+        <h1>{frontmatter.title}</h1>
+        {
+          pubDate && (
+            <time datetime={pubDate.toISOString()}>
+              {pubDate.toLocaleDateString("en", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          )
+        }
+      </header>
+      <Content />
+    </article>
+  </main>
+</BaseLayout>

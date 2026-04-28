@@ -1,0 +1,13 @@
+node_modules/
+.astro/
+dist/
+
+# Local checkout used by the full site build.
+par-lang/
+
+# Rust and Trunk output that may appear during local experimentation.
+target/
+.trunk/
+
+# OS/editor noise.
+.DS_Store

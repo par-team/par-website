@@ -1,0 +1,95 @@
+name: Deploy website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      par_repository:
+        description: "Par language repository to build docs and playground from"
+        required: true
+        default: "faiface/par-lang"
+      par_ref:
+        description: "Branch, tag, or commit in the Par language repository"
+        required: true
+        default: "main"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v6
+        with:
+          path: website
+
+      - name: Checkout Par language
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.inputs.par_repository || 'faiface/par-lang' }}
+          ref: ${{ github.event.inputs.par_ref || 'main' }}
+          path: par-lang
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Install mdBook
+        uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook
+
+      - name: Install Trunk
+        uses: taiki-e/install-action@v2
+        with:
+          tool: trunk
+
+      - name: Install website dependencies
+        working-directory: website
+        run: npm ci
+
+      - name: Build site
+        working-directory: website
+        env:
+          PAR_LANG_DIR: ${{ github.workspace }}/par-lang
+          PAR_REPOSITORY: ${{ github.event.inputs.par_repository || 'faiface/par-lang' }}
+        run: npm run build:all
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: website/dist
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

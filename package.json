@@ -1,0 +1,17 @@
+{
+  "name": "par-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "build:all": "bash scripts/build-site.sh"
+  },
+  "dependencies": {
+    "astro": "^6.1.10",
+    "highlight.js": "^11.11.1",
+    "rehype-highlight": "^7.0.2"
+  }
+}

@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { highlightPar } from "../lib/highlight.js";
+import { parExample } from "../lib/parExample.js";
+
+const highlightedExample = highlightPar(parExample);
+
+const primaryLinks = [
+  ["Read the book", "/book/"],
+  ["Try the playground", "/playground/"],
+  ["Browse docs", "/doc/"],
+];
+
+const communityLinks = [
+  ["GitHub", "https://github.com/faiface/par-lang"],
+  ["Discord", "https://discord.gg/8KsypefW99"],
+  ["Blog", "/blog/"],
+];
+---
+
+<BaseLayout title="Par · Work in Progress">
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">par.run is warming up</p>
+        <h1>Par</h1>
+        <p class="lede">
+          A programming language experiment with linear types, duality, and
+          concurrency at its core.
+        </p>
+        <p class="wip-note">
+          This is the first scaffold of the Par website. The language, docs,
+          playground, and standard library pages are coming together here, but
+          the final story is still being written.
+        </p>
+        <div class="action-row" aria-label="Primary links">
+          {
+            primaryLinks.map(([label, href], index) => (
+              <a class={index === 0 ? "button primary" : "button"} href={href}>
+                {label}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="code-panel" aria-label="Par code example">
+        <div class="code-panel-header">
+          <span>Playground.par</span>
+          <span class="status-dot">WIP</span>
+        </div>
+        <pre><code class="hljs language-par" set:html={highlightedExample} /></pre>
+      </div>
+    </section>
+
+    <section class="link-strip" aria-label="Community links">
+      {
+        communityLinks.map(([label, href]) => (
+          <a href={href}>{label}</a>
+        ))
+      }
+    </section>
+  </main>
+</BaseLayout>

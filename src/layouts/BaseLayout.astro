@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Par",
+  description = "The work-in-progress website for the Par programming language.",
+} = Astro.props;
+
+const navItems = [
+  ["Book", "/book/"],
+  ["Docs", "/doc/"],
+  ["Playground", "/playground/"],
+  ["Blog", "/blog/"],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Par home">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span>Par</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {
+          navItems.map(([label, href]) => (
+            <a href={href}>{label}</a>
+          ))
+        }
+      </nav>
+    </header>
+    <slot />
+  </body>
+</html>
