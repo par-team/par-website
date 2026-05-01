@@ -44,10 +44,10 @@ def Numbers: List<Int> = chan yield {
 
 const protocolExample = `let map = Map.New(type String, type Int)
 // Even a map has a protocol.
-// Calling \`entry\` advances it.
+// Calling \`.entry\` advances it.
 map.entry("A")[default(0) count]
 // The entry "A" is activated. Now we must call
-// - \`.put\` to insert a value.
+// - \`.put\` to insert a value, or
 // - \`.delete\` to remove the entry.
 map.put(count + 1)
 // Only now can we call \`.entry\` again.`;
