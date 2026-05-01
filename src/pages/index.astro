@@ -86,20 +86,23 @@ const communityLinks = [
 const styleSections = [
   {
     eyebrow: "Functional",
+    fileName: "Functional.par",
     title: "Data can still feel ordinary.",
     bodyHtml:
       'Higher-order <a href="/book/types/function.html">functions</a>, algebraic data, and list combinators sit naturally in <strong class="language-name">Par</strong>.',
     html: code.functional,
   },
   {
-    eyebrow: "ObjectOriented",
+    eyebrow: "Object-Oriented",
+    fileName: "ObjectOriented.par",
     title: "Objects are iterative choices.",
     bodyHtml:
       '<a href="/book/types/choice.html">Choice</a> and <a href="/book/types/iterative.html">iterative</a> types give <strong class="language-name">Par</strong> an object-like style where methods are branches of a communication protocol.',
     html: code.object,
   },
   {
-    eyebrow: "ProcessSyntax",
+    eyebrow: "Process Syntax",
+    fileName: "ProcessSyntax.par",
     title: "When channels matter, say so.",
     bodyHtml:
       `<strong class="language-name">Par</strong> is ultimately a <a class="concept-link" href="${links.piCalculus}">process language</a>. A <code>chan</code> expression lets a value be constructed by talking to its consumer from the other side.`,
@@ -244,7 +247,7 @@ const styleSections = [
             </div>
             <div class="code-panel">
               <div class="code-panel-header">
-                <span>{section.eyebrow}.par</span>
+                <span>{section.fileName}</span>
               </div>
               <pre><code class="hljs language-par" set:html={section.html} /></pre>
             </div>
