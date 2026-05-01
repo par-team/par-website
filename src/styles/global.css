@@ -198,7 +198,7 @@ code {
 
 .action-row {
   display: grid;
-  grid-template-columns: minmax(220px, 340px);
+  grid-template-columns: minmax(260px, 440px);
   gap: 9px;
   margin-top: 26px;
 }
@@ -294,6 +294,7 @@ code {
 .icon-play svg,
 .icon-github svg,
 .icon-discord svg,
+.icon-youtube svg,
 .icon-heart svg {
   fill: currentColor;
   stroke: none;
@@ -319,15 +320,19 @@ code {
   color: #5865f2;
 }
 
+.icon-youtube {
+  color: #c45d50;
+}
+
 .icon-heart {
   color: #cc4667;
 }
 
 .community-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  width: min(100%, 340px);
+  width: min(100%, 440px);
   margin-top: 14px;
 }
 
@@ -359,7 +364,7 @@ code {
 }
 
 .sponsor-note {
-  max-width: 340px;
+  max-width: 440px;
   margin-top: 12px;
   color: var(--ink-muted);
   font-size: 0.9rem;
@@ -897,6 +902,10 @@ h3 {
 
   .button {
     width: 100%;
+  }
+
+  .community-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   h2 {
