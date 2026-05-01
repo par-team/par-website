@@ -5,11 +5,11 @@ import {
   @core/Nat
 }
 
-def Describe = [number: Int] if {
-  number < 0       => "Negative",
-  number == 0      => "Zero",
-  0 < number < 100 => "Small",
-  else             => "Incomprehensible",
+def Describe = [n: Int] if {
+  n < 0       => "Negative",
+  n == 0      => "Zero",
+  0 < n < 100 => "Small",
+  else        => "Incomprehensible",
 }
 
 dec Factorial : [Nat] Nat

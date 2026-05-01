@@ -5,60 +5,310 @@ import { parExample } from "../lib/parExample.js";
 
 const highlightedExample = highlightPar(parExample);
 
+const links = {
+  github: "https://github.com/faiface/par-lang",
+  discord: "https://discord.gg/8KsypefW99",
+  sponsor: "https://github.com/sponsors/faiface",
+  linearLogic: "https://en.wikipedia.org/wiki/Linear_logic",
+  curryHoward: "https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence",
+  piCalculus: "https://en.wikipedia.org/wiki/%CE%A0-calculus",
+  sessionTypes: "https://en.wikipedia.org/wiki/Session_type",
+};
+
+const concurrencyExample = `def Main =
+  let rootPath = Os.Path(".").append("Downloads") in
+  YieldDownloadRequests("127.0.0.1:3000", rootPath)
+    ->List.Map(type List<Event>, box DownloadFile)
+    ->FanIn
+    ->ShowDownloadProgress(rootPath)`;
+
+const functionalExample = `let answer = Int.Range(1, 100)
+  ->List.Filter(box [i] i->Int.Mod(2) == 0)
+  ->List.Map(type Int, box [i] i * i)
+  ->List.Sum`;
+
+const objectExample = `let builder = String.Builder
+builder.add("Hello")
+builder.add(", ")
+builder.add("world!")
+let answer = builder.build`;
+
+const processExample = `// = *(1, 2, 3)
+def Numbers: List<Int> = chan yield {
+  yield.item(1)
+  yield.item(2)
+  yield.item(3)
+  yield.end!
+}`;
+
+const protocolExample = `let map = Map.New(type String, type Int)
+// Even a map has a protocol.
+// Calling \`entry\` advances it.
+map.entry("A")[default(0) count]
+// The entry "A" is activated. Now we must call
+// - \`.put\` to insert a value.
+// - \`.delete\` to remove the entry.
+map.put(count + 1)
+// Only now can we call \`.entry\` again.`;
+
+const code = {
+  concurrency: highlightPar(concurrencyExample),
+  functional: highlightPar(functionalExample),
+  object: highlightPar(objectExample),
+  process: highlightPar(processExample),
+  protocol: highlightPar(protocolExample),
+};
+
+const icons = {
+  book: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h9a3 3 0 0 1 3 3v12h-9a3 3 0 0 0-3 3v-18Z"/><path d="M5 4.5a3 3 0 0 1 3-3h11v17H8a3 3 0 0 0-3 3"/></svg>`,
+  docs: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M9.5 12h6"/><path d="M9.5 15.5h6"/></svg>`,
+  play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>`,
+  github: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.46.08.63-.2.63-.44v-1.6c-2.57.56-3.1-1.1-3.1-1.1-.42-1.05-1.02-1.33-1.02-1.33-.83-.57.06-.56.06-.56.92.07 1.4.94 1.4.94.82 1.39 2.14.99 2.66.76.08-.59.32-.99.58-1.22-2.05-.23-4.2-1.03-4.2-4.56 0-1.01.36-1.83.95-2.48-.1-.23-.41-1.18.09-2.45 0 0 .77-.25 2.54.95a8.7 8.7 0 0 1 4.62 0c1.76-1.2 2.53-.95 2.53-.95.5 1.27.19 2.22.09 2.45.59.65.95 1.47.95 2.48 0 3.54-2.16 4.32-4.21 4.55.33.29.62.85.62 1.71v2.37c0 .24.17.53.64.44A9.2 9.2 0 0 0 12 2.8Z"/></svg>`,
+  discord: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.54 5.34A17.48 17.48 0 0 0 15.16 4c-.19.34-.41.8-.56 1.16a16.26 16.26 0 0 0-5.2 0A12.4 12.4 0 0 0 8.84 4c-1.54.27-3 .72-4.38 1.34C1.69 9.49.94 13.54 1.31 17.53A17.64 17.64 0 0 0 6.68 20.25c.43-.59.82-1.21 1.15-1.86-.63-.23-1.23-.53-1.79-.88.15-.11.3-.23.44-.35a12.54 12.54 0 0 0 11.04 0c.14.12.29.24.44.35-.56.35-1.16.65-1.79.88.33.65.72 1.27 1.15 1.86a17.59 17.59 0 0 0 5.37-2.72c.43-4.63-.73-8.64-3.15-12.19ZM8.7 15.08c-1.05 0-1.91-.96-1.91-2.14s.84-2.14 1.91-2.14c1.06 0 1.93.97 1.91 2.14 0 1.18-.85 2.14-1.91 2.14Zm6.6 0c-1.05 0-1.91-.96-1.91-2.14s.84-2.14 1.91-2.14c1.06 0 1.93.97 1.91 2.14 0 1.18-.85 2.14-1.91 2.14Z"/></svg>`,
+  heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35 10.55 20.03C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08A5.96 5.96 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35Z"/></svg>`,
+  bug: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.7 8.8c.72-1.05 1.82-1.58 3.3-1.58s2.58.53 3.3 1.58"/><path d="M8 13.7c0-3.55 1.48-5.55 4-5.55s4 2 4 5.55v.9c0 3.4-1.58 5.55-4 5.55s-4-2.15-4-5.55z"/><path d="M12 8.15v12"/><path d="m8.9 8.8-2.5-2.5"/><path d="m15.1 8.8 2.5-2.5"/><path d="M7.05 11.5H4.3"/><path d="M16.95 11.5h2.75"/><path d="m7.05 14.2-2.7 1.15"/><path d="m16.95 14.2 2.7 1.15"/><path d="m7.5 17.05-2.05 1.9"/><path d="m16.5 17.05 2.05 1.9"/></svg>`,
+  cycle: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 19H4.82c-.65 0-1.23-.34-1.55-.88-.32-.55-.32-1.22 0-1.78L7.2 9.5"/><path d="m8.3 13.6-1.1-4.1-4.1 1.1"/><path d="M11 19h8.2c.65 0 1.23-.34 1.55-.89.32-.55.32-1.22 0-1.78l-1.22-2.12"/><path d="m14 16-3 3 3 3"/><path d="m9.34 5.81 1.1-1.89c.32-.57.9-.92 1.55-.92.64 0 1.22.34 1.54.89l3.94 6.84"/><path d="m13.38 9.63 4.09 1.1 1.1-4.1"/></svg>`,
+  infinity: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c-1.7-2.35-3.15-3.5-4.85-3.5a3.5 3.5 0 0 0 0 7c1.7 0 3.15-1.15 4.85-3.5Zm0 0c1.7 2.35 3.15 3.5 4.85 3.5a3.5 3.5 0 0 0 0-7c-1.7 0-3.15 1.15-4.85 3.5Z"/></svg>`,
+};
+
 const primaryLinks = [
-  ["Read the book", "/book/"],
-  ["Try the playground", "/playground/"],
-  ["Browse docs", "/doc/"],
+  ["READ THE", "BOOK", "/book/", "book"],
+  ["BROWSE THE", "DOCS", "/doc/", "docs"],
+  ["TRY THE", "PLAYGROUND", "/playground/", "play"],
 ];
 
 const communityLinks = [
-  ["GitHub", "https://github.com/faiface/par-lang"],
-  ["Discord", "https://discord.gg/8KsypefW99"],
-  ["Blog", "/blog/"],
+  ["GitHub", links.github, "github"],
+  ["Discord", links.discord, "discord"],
+  ["Sponsor", links.sponsor, "heart"],
+];
+
+const styleSections = [
+  {
+    eyebrow: "Functional",
+    title: "Data can still feel ordinary.",
+    bodyHtml:
+      'Higher-order <a href="/book/types/function.html">functions</a>, algebraic data, and list combinators sit naturally in <strong class="language-name">Par</strong>.',
+    html: code.functional,
+  },
+  {
+    eyebrow: "Object-Oriented",
+    title: "Objects are iterative choices.",
+    bodyHtml:
+      '<a href="/book/types/choice.html">Choice</a> and <a href="/book/types/iterative.html">iterative</a> types give <strong class="language-name">Par</strong> an object-like style where methods are branches of a communication protocol.',
+    html: code.object,
+  },
+  {
+    eyebrow: "Process Syntax",
+    title: "When channels matter, say so.",
+    bodyHtml:
+      `<strong class="language-name">Par</strong> is ultimately a <a class="concept-link" href="${links.piCalculus}">process language</a>. A <code>chan</code> expression lets a value be constructed by talking to its consumer from the other side.`,
+    html: code.process,
+  },
 ];
 ---
 
-<BaseLayout title="Par · Work in Progress">
-  <main>
+<BaseLayout
+  title="Par · Linear Logic in Practice"
+  description="An experimental programming language bringing the expressive power of linear logic into practice."
+>
+  <main class="frontpage">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">par.run is warming up</p>
-        <h1>Par</h1>
-        <p class="lede">
-          A programming language experiment with linear types, duality, and
-          concurrency at its core.
-        </p>
-        <p class="wip-note">
-          This is the first scaffold of the Par website. The language, docs,
-          playground, and standard library pages are coming together here, but
-          the final story is still being written.
+        <div class="hero-title-lockup">
+          <span class="hero-symbol" aria-hidden="true">⅋</span>
+          <h1>Par</h1>
+        </div>
+        <p class="hero-lede">
+          An experimental <em>programming language</em> bringing the expressive
+          power of <em>linear logic</em> into practice.
         </p>
         <div class="action-row" aria-label="Primary links">
           {
-            primaryLinks.map(([label, href], index) => (
-              <a class={index === 0 ? "button primary" : "button"} href={href}>
+            primaryLinks.map(([prefix, strong, href, icon]) => (
+              <a class={`button button-${icon}`} href={href}>
+                <span class={`button-icon icon-${icon}`} set:html={icons[icon]} />
+                <span>{prefix} <strong>{strong}</strong></span>
+              </a>
+            ))
+          }
+        </div>
+        <div class="community-row" aria-label="Community links">
+          {
+            communityLinks.map(([label, href, icon]) => (
+              <a class="community-button" href={href}>
+                <span class={`button-icon icon-${icon}`} set:html={icons[icon]} />
+                {label}
+              </a>
+            ))
+          }
+        </div>
+        <p class="sponsor-note">
+          Sponsoring the project helps keep <strong class="language-name">Par</strong>
+          moving from experiment toward a language you can build with.
+        </p>
+      </div>
+
+      <div class="code-panel hero-code" aria-label="Par code example">
+        <div class="code-panel-header">
+          <span>Playground.par</span>
+        </div>
+        <pre><code class="hljs language-par" set:html={highlightedExample} /></pre>
+      </div>
+    </section>
+
+    <section class="section-band totality-band">
+      <div class="section-copy">
+        <p class="eyebrow">Totality</p>
+        <h2>Programs should finish, or keep productively communicating.</h2>
+        <p>
+          <strong class="language-name">Par</strong> rules out broad classes of
+          errors before the program even runs: no runtime panics, no deadlocks,
+          and no accidental infinite loops.
+        </p>
+      </div>
+      <div class="principle-grid" aria-label="Totality guarantees">
+        <div>
+          <span class="principle-icon icon-bug" set:html={icons.bug} />
+          <span>
+            <strong>No panics</strong>
+            <span>Errors are represented in types and handled explicitly.</span>
+          </span>
+        </div>
+        <div>
+          <span class="principle-icon icon-cycle" set:html={icons.cycle} />
+          <span>
+            <strong>No deadlocks</strong>
+            <span>Communication follows a tree-like structure.</span>
+          </span>
+        </div>
+        <div>
+          <span class="principle-icon icon-infinity" set:html={icons.infinity} />
+          <span>
+            <strong>No accidental infinite loops</strong>
+            <span>Recursion and corecursion use <code>begin</code> and <code>loop</code>.</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-band split-section">
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>Downloader.par</span>
+          <a href="https://github.com/faiface/par-lang/tree/main/examples">examples</a>
+        </div>
+        <pre><code class="hljs language-par" set:html={code.concurrency} /></pre>
+      </div>
+      <div class="section-copy">
+        <p class="eyebrow">Automatic Concurrency</p>
+        <h2>Whatever can run concurrently, runs concurrently.</h2>
+        <p>
+          Blocking is local and induced by data dependencies. In
+          <strong class="language-name">Par</strong>, even ordinary-looking
+          structures like lists can carry asynchronous work as their elements
+          become available.
+        </p>
+      </div>
+    </section>
+
+    <section class="styles-section">
+      <div class="section-heading">
+        <p class="eyebrow">One Foundation</p>
+        <h2>Several styles emerge from the same logic.</h2>
+        <p>
+          <strong class="language-name">Par</strong> is
+          <a class="concept-link" href={links.curryHoward}>Curry-Howard
+          isomorphic</a> to classical
+          <a class="concept-link" href={links.linearLogic}>linear logic</a>. At
+          its core it is a process calculus: everything is a channel, and every
+          operation is communication. Even lists and maps are communication
+          channels. With syntax sugar, familiar paradigms emerge naturally as
+          sub-languages of this single foundation.
+        </p>
+      </div>
+      <div class="logic-sequent" aria-hidden="true">
+        <span class="sequent-turnstile">⊢</span>
+        <span class="sequent-formula">A</span>
+        <span class="sequent-comma">,</span>
+        <span class="sequent-formula">A<sup>⊥</sup></span>
+      </div>
+
+      {
+        styleSections.map((section, index) => (
+          <article class={index % 2 === 1 ? "style-row style-row-flipped" : "style-row"}>
+            <div class="style-copy">
+              <p class="eyebrow">{section.eyebrow}</p>
+              <h3>{section.title}</h3>
+              <p set:html={section.bodyHtml} />
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <span>{section.eyebrow}.par</span>
+              </div>
+              <pre><code class="hljs language-par" set:html={section.html} /></pre>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="section-band split-section protocol-section">
+      <div class="code-panel">
+        <div class="code-panel-header">
+          <span>Protocol.par</span>
+          <a href="/book/process_syntax.html">process syntax</a>
+        </div>
+        <pre><code class="hljs language-par" set:html={code.protocol} /></pre>
+      </div>
+      <div class="section-copy">
+        <p class="eyebrow">Session Types</p>
+        <h2>Types are communication protocols.</h2>
+        <p>
+          All values in <strong class="language-name">Par</strong> are
+          communication channels. For example, a map is not just a passive
+          container; it has a protocol, and each operation advances that
+          protocol.
+        </p>
+        <p>
+          When you call <code>.entry</code>, the map moves into the part of the
+          protocol for resolving that key. The type then guides what must happen
+          next before the map is available as a map again.
+        </p>
+      </div>
+    </section>
+
+    <section class="explore-section" aria-labelledby="explore-heading">
+      <div class="explore-copy">
+        <p class="eyebrow">Explore <strong class="language-name">Par</strong></p>
+        <h2 id="explore-heading">A language from another planet.</h2>
+        <p>
+          <strong class="language-name">Par</strong> is named after the
+          linear-logic connective <em>⅋</em>, pronounced "par". It is an
+          attempt to bring the expressive power of classical
+          <a class="concept-link" href={links.linearLogic}>linear logic</a>,
+          <a class="concept-link" href={links.sessionTypes}>session types</a>,
+          and process calculi into a practical language.
+        </p>
+        <p>
+          It is not really possible to make this paradigm feel completely
+          familiar. Take your time with it. If the direction speaks to you,
+          <a href={links.github}>stars</a>,
+          <a href={links.discord}>feedback</a>,
+          <a href={links.discord}>discussion</a>, and
+          <a href={links.sponsor}>sponsorship</a> all help.
+        </p>
+        <div class="community-row explore-community" aria-label="Community links">
+          {
+            communityLinks.map(([label, href, icon]) => (
+              <a class="community-button" href={href}>
+                <span class={`button-icon icon-${icon}`} set:html={icons[icon]} />
                 {label}
               </a>
             ))
           }
         </div>
       </div>
-
-      <div class="code-panel" aria-label="Par code example">
-        <div class="code-panel-header">
-          <span>Playground.par</span>
-          <span class="status-dot">WIP</span>
-        </div>
-        <pre><code class="hljs language-par" set:html={highlightedExample} /></pre>
-      </div>
-    </section>
-
-    <section class="link-strip" aria-label="Community links">
-      {
-        communityLinks.map(([label, href]) => (
-          <a href={href}>{label}</a>
-        ))
-      }
     </section>
   </main>
 </BaseLayout>
