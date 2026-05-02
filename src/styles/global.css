@@ -236,6 +236,16 @@ code {
   text-shadow: 0 0 0 currentColor;
 }
 
+.button-start {
+  border-color: rgba(123, 98, 183, 0.34);
+  background: #d9c9f3;
+}
+
+.button-start:hover,
+.button-start:focus-visible {
+  background: #e5d8fb;
+}
+
 .button-book {
   border-color: rgba(142, 111, 16, 0.38);
   background: #f4df76;
@@ -298,6 +308,10 @@ code {
 .icon-heart svg {
   fill: currentColor;
   stroke: none;
+}
+
+.button-start .button-icon {
+  color: var(--violet);
 }
 
 .button-book .button-icon {
