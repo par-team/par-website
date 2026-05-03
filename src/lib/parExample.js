@@ -14,7 +14,7 @@ def Describe = [n: Int] if {
 
 dec Factorial : [Nat] Nat
 def Factorial = [n]
-  Nat.Range(1, n).begin.case {
+  Nat.Range(1, n + 1).begin.case {
     .end!       => 1,
     .item(x) xs => x * xs.loop,
   }
