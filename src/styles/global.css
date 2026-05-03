@@ -126,6 +126,7 @@ code {
   color: var(--ink-muted);
   font-size: 0.94rem;
   font-weight: 640;
+  white-space: nowrap;
   text-decoration: none;
 }
 
@@ -853,15 +854,6 @@ h3 {
     --section-y: 78px;
   }
 
-  .site-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .site-nav {
-    justify-content: flex-start;
-  }
-
   .hero,
   .section-band,
   .explore-section {
@@ -888,6 +880,26 @@ h3 {
   :root {
     --page-gutter: 16px;
     --section-y: 62px;
+  }
+
+  .site-header {
+    gap: 12px;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .site-nav {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    gap: clamp(0px, 1vw, 4px);
+    min-width: 0;
+  }
+
+  .site-nav a {
+    padding: 6px clamp(2px, 1.4vw, 7px);
+    font-size: clamp(0.78rem, 3.3vw, 0.9rem);
   }
 
   .hero-title-lockup {
