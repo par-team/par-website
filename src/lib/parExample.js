@@ -31,6 +31,5 @@ def Fibonacci = do {
   .next => do {
     let (a, b)! = (b, a + b)!
   } in (a) loop,
-  
   .close => !,
 }`;
