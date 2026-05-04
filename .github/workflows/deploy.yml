@@ -9,7 +9,7 @@ on:
       par_repository:
         description: "Par language repository to build docs and playground from"
         required: true
-        default: "faiface/par-lang"
+        default: "par-team/par-lang"
       par_ref:
         description: "Branch, tag, or commit in the Par language repository"
         required: true
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout Par language
         uses: actions/checkout@v6
         with:
-          repository: ${{ github.event.inputs.par_repository || 'faiface/par-lang' }}
+          repository: ${{ github.event.inputs.par_repository || 'par-team/par-lang' }}
           ref: ${{ github.event.inputs.par_ref || 'main' }}
           path: par-lang
 
@@ -69,7 +69,7 @@ jobs:
         working-directory: website
         env:
           PAR_LANG_DIR: ${{ github.workspace }}/par-lang
-          PAR_REPOSITORY: ${{ github.event.inputs.par_repository || 'faiface/par-lang' }}
+          PAR_REPOSITORY: ${{ github.event.inputs.par_repository || 'par-team/par-lang' }}
         run: npm run build:all
 
       - name: Deploy to Cloudflare Pages

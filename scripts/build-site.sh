@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PAR_LANG_DIR="${PAR_LANG_DIR:-"$ROOT_DIR/../par-lang"}"
-PAR_REPOSITORY="${PAR_REPOSITORY:-faiface/par-lang}"
+PAR_REPOSITORY="${PAR_REPOSITORY:-par-team/par-lang}"
 DIST_DIR="$ROOT_DIR/dist"
 
 require_command() {

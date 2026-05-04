@@ -19,7 +19,7 @@ The full build expects a local checkout of the language repository next to this
 repo by default:
 
 ```sh
-PAR_LANG_DIR=/Users/faiface/par-lang npm run build:all
+PAR_LANG_DIR=/Users/par-team/par-lang npm run build:all
 ```
 
 The final static artifact is written to `dist/`.
