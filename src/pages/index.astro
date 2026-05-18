@@ -19,13 +19,13 @@ const links = {
 const concurrencyExample = `def Main =
   let rootPath = Os.Path(".").append("Downloads") in
   YieldDownloadRequests("127.0.0.1:3000", rootPath)
-    ->List.Map(type List<Event>, box DownloadFile)
+    ->List.Map(box DownloadFile)
     ->FanIn
     ->ShowDownloadProgress(rootPath)`;
 
 const functionalExample = `let answer = Int.Range(1, 100)
   ->List.Filter(box [i] i->Int.Mod(2) == 0)
-  ->List.Map(type Int, box [i] i * i)
+  ->List.Map(box [i] i * i)
   ->List.Sum`;
 
 const objectExample = `let builder = String.Builder
